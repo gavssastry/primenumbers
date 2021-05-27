@@ -1,0 +1,61 @@
+// C++ implementation of the approach
+#include <bits/stdc++.h>
+using namespace std;
+#define MAX 1000000
+ 
+// stores whether the number is prime or not
+bool prime[MAX + 1];
+ 
+// stores the count of prime numbers
+// less than or equal to the index
+int sum[MAX + 1];
+ 
+// create the sieve
+void SieveOfEratosthenes()
+{
+    // Create a boolean array "prime[0..n]" and initialize
+    // all the entries as true. A value in prime[i] will
+    // finally be false if 'i' is Not a prime, else true.
+    memset(prime, true, sizeof(prime));
+    memset(sum, 0, sizeof(sum));
+    prime[1] = false;
+ 
+    for (int p = 2; p * p <= MAX; p++) {
+ 
+        // If prime[p] is not changed, then it is a prime
+        if (prime[p]) {
+ 
+            // Update all multiples of p
+            for (int i = p * 2; i <= MAX; i += p)
+                prime[i] = false;
+        }
+    }
+ 
+    // stores the prefix sum of number
+    // of primes less than or equal to 'i'
+    for (int i = 1; i <= MAX; i++) {
+        if (prime[i] == true)
+            sum[i] = 1;
+ 
+        sum[i] += sum[i - 1];
+    }
+}
+ 
+// Driver code
+int main()
+{
+    // create the sieve
+    SieveOfEratosthenes();
+ 
+    // 'l' and 'r' are the lower and upper bounds
+    // of the range
+    int l = 3, r = 9;
+ 
+    // get the value of count
+    int c = (sum[r] - sum[l - 1]);
+ 
+    // display the count
+    cout << "Count: " << c << endl;
+ 
+    return 0;
+}
